@@ -49,7 +49,9 @@ results/exp2_noise/*.log
 results/exp2_noise/*.txt
 results/exp2_noise/*.csv
 results/exp2_noise/*.json
-
+results/figures/*.png
+results/images/*.png
+*.png
 
 # Keep directory structure
 !results/logs/.gitkeep
