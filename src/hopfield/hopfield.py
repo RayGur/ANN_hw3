@@ -10,11 +10,38 @@ from src.core.utils import activation_tanh
 
 class HopfieldNetwork:
     def __init__(self, n_neurons=45):
+        """
+        初始化 Hopfield Network
+
+        Args:
+            n_neurons: 神經元數量 (默認45)
+        """
         self.n = n_neurons
         self.W = None
         self.patterns = None
+        self.training_method = None  # 記錄使用的訓練方法
 
-    def train(self, patterns):
+    def train(self, patterns, method="outer_product"):
+        """
+        訓練Hopfield Network
+
+        Args:
+            patterns: list of np.array, 每個pattern是45維向量
+            method: 訓練方法，'outer_product' 或 'pseudoinverse'
+        """
+        self.patterns = patterns
+        self.training_method = method
+
+        if method == "outer_product":
+            self._train_outer_product(patterns)
+        elif method == "pseudoinverse":
+            self._train_pseudoinverse(patterns)
+        else:
+            raise ValueError(f"Unknown training method: {method}")
+
+        return self.W
+
+    def _train_outer_product(self, patterns):
         """
         使用 Outer Product Method 計算權重矩陣
 
@@ -25,7 +52,6 @@ class HopfieldNetwork:
         Args:
             patterns: list of np.array, 每個pattern是45維向量
         """
-        self.patterns = patterns
         p = len(patterns)  # pattern數量
         n = self.n  # 神經元數量
 
@@ -47,7 +73,41 @@ class HopfieldNetwork:
         # 驗證權重矩陣對稱性
         assert np.allclose(self.W, self.W.T), "權重矩陣必須對稱"
 
-        return self.W
+    def _train_pseudoinverse(self, patterns):
+        """
+        使用 Pseudo-inverse (Moore-Penrose) Method 計算權重矩陣
+
+        公式: W = Z·Z^+
+        其中 Z 是 patterns 組成的矩陣 (n×p)
+        Z^+ 是 Z 的偽逆矩陣
+
+        優點:
+        - 對相似patterns有更好的分離能力
+        - 理論上可以存儲更多patterns
+        - 對噪聲更魯棒
+
+        Args:
+            patterns: list of np.array, 每個pattern是45維向量
+        """
+        n = self.n  # 神經元數量
+        p = len(patterns)  # pattern數量
+
+        # 構建pattern矩陣 Z (n×p)
+        # 每一列是一個pattern
+        Z = np.column_stack(patterns)
+
+        # 計算偽逆矩陣 Z^+
+        Z_pinv = np.linalg.pinv(Z)
+
+        # 計算權重矩陣 W = Z·Z^+
+        self.W = np.dot(Z, Z_pinv)
+
+        # 確保對角線為0 (無自連接)
+        np.fill_diagonal(self.W, 0)
+
+        # 注意: Pseudo-inverse方法得到的權重矩陣不一定對稱
+        # 如果需要對稱，可以使用 W = (W + W^T) / 2
+        # 但這會影響效果，所以我們保持原樣
 
     def recall(self, noisy_pattern, max_iter=100, beta=100, verbose=False, seed=None):
         """
@@ -115,7 +175,7 @@ if __name__ == "__main__":
     print("=== 階段2驗證：Hopfield Network ===\n")
 
     # 導入patterns和binarize
-    from patterns import get_patterns_as_vectors
+    from src.hopfield.patterns import get_patterns_as_vectors
     from src.core.utils import binarize
 
     patterns = get_patterns_as_vectors()
