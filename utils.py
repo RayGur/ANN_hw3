@@ -9,6 +9,14 @@ import patterns
 
 
 def visualize_pattern(pattern, title="Pattern"):
+    """
+    視覺化單個圖像
+    注意: 白色(-1)顯示為白，深色(+1)顯示為黑/灰
+
+    Args:
+        pattern: 9x5矩陣或45維向量
+        title: 圖像標題
+    """
     if pattern.ndim == 1:
         pattern = pattern.reshape(9, 5)
 
@@ -21,7 +29,24 @@ def visualize_pattern(pattern, title="Pattern"):
 
 
 def activation_tanh(u, beta=100):
+
     return np.tanh(beta * u)
+
+
+def binarize(values):
+    """
+    將連續值二值化為{-1, +1}
+    處理 sign(0) = 0 的情況，將0視為+1
+
+    Args:
+        values: 輸入值（標量或向量）
+
+    Returns:
+        二值化結果 {-1, +1}
+    """
+    result = np.sign(values)
+    result[result == 0] = 1  # 將0視為+1
+    return result.astype(int)
 
 
 if __name__ == "__main__":
@@ -33,6 +58,7 @@ if __name__ == "__main__":
     visualize_pattern(patterns.PATTERN_4, title="Pattern 4")
     print("圖像已保存至: results/images/\n")
     # 驗證檢查
+
     print("=== 階段2驗證：激活函數 ===\n")
 
     # 測試不同輸入值
@@ -66,7 +92,7 @@ if __name__ == "__main__":
     plt.legend()
     plt.grid(True, alpha=0.3)
     plt.savefig("results/figures/activation_function.png", dpi=150, bbox_inches="tight")
-    print("圖形已保存至: activation_function.png")
+    print("圖形已保存至: results/figures/activation_function.png")
 
     # 檢查單調性
     print("\n單調性檢查:")
