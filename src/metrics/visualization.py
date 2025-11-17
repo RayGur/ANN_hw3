@@ -203,10 +203,10 @@ if __name__ == "__main__":
     print("=== 視覺化模組測試 ===\n")
 
     import os
-    from patterns import get_patterns_as_vectors
-    from hopfield import HopfieldNetwork
-    from evaluation import run_multiple_tests
-    from utils import add_noise, binarize
+    from src.hopfield.patterns import get_patterns_as_vectors
+    from src.hopfield.hopfield import HopfieldNetwork
+    from src.metrics.evaluation import run_multiple_tests
+    from src.core.utils import add_noise, binarize
 
     os.makedirs("results/visualization_test", exist_ok=True)
 

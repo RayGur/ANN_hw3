@@ -5,7 +5,7 @@ Hopfield Network 實作
 """
 
 import numpy as np
-from utils import activation_tanh
+from src.core.utils import activation_tanh
 
 
 class HopfieldNetwork:
@@ -116,7 +116,7 @@ if __name__ == "__main__":
 
     # 導入patterns和binarize
     from patterns import get_patterns_as_vectors
-    from utils import binarize
+    from src.core.utils import binarize
 
     patterns = get_patterns_as_vectors()
 

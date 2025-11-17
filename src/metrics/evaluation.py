@@ -4,7 +4,7 @@
 """
 
 import numpy as np
-from utils import binarize
+from src.core.utils import binarize
 
 
 def calculate_pixel_accuracy(original, recovered):
@@ -76,7 +76,7 @@ def run_single_test(
     Returns:
         dict: 包含所有測試結果的字典
     """
-    from utils import add_noise
+    from src.core.utils import add_noise
 
     # 添加噪聲
     noisy = add_noise(pattern, noise_level, seed=noise_seed)
@@ -152,8 +152,8 @@ if __name__ == "__main__":
     # 測試評估函數
     print("=== 評估模組測試 ===\n")
 
-    from patterns import get_patterns_as_vectors
-    from hopfield import HopfieldNetwork
+    from src.hopfield.patterns import get_patterns_as_vectors
+    from src.hopfield.hopfield import HopfieldNetwork
 
     patterns = get_patterns_as_vectors()
     hopfield = HopfieldNetwork()

@@ -118,9 +118,9 @@ if __name__ == "__main__":
     # 測試統計函數
     print("=== 統計模組測試 ===\n")
 
-    from patterns import get_patterns_as_vectors
-    from hopfield import HopfieldNetwork
-    from evaluation import run_multiple_tests
+    from src.hopfield.patterns import get_patterns_as_vectors
+    from src.hopfield.hopfield import HopfieldNetwork
+    from src.metrics.evaluation import run_multiple_tests
 
     patterns = get_patterns_as_vectors()
     hopfield = HopfieldNetwork()
