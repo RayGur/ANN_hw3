@@ -67,36 +67,17 @@ PATTERN_4 = np.array(
 
 
 def get_patterns_as_vectors():
-    """
-    將4個圖像轉換為45維向量
-
-    Returns:
-        list of np.array: 4個長度為45的向量
-    """
+    # 4個圖像轉換為45維向量
     patterns = [PATTERN_1, PATTERN_2, PATTERN_3, PATTERN_4]
     return [p.flatten() for p in patterns]
 
 
 def get_patterns_as_matrices():
-    """
-    返回4個9x5的原始圖像矩陣
-
-    Returns:
-        list of np.array: 4個9x5矩陣
-    """
     return [PATTERN_1, PATTERN_2, PATTERN_3, PATTERN_4]
 
 
 def vector_to_matrix(vector):
-    """
-    將45維向量轉換回9x5矩陣
-
-    Args:
-        vector: 長度為45的向量
-
-    Returns:
-        np.array: 9x5矩陣
-    """
+    # 將45維向量轉換回9x5矩陣
     return vector.reshape(9, 5)
 
 
