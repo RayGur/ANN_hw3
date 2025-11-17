@@ -17,7 +17,7 @@ from src.metrics.evaluation import (
     run_multiple_tests,
 )
 from src.metrics.statistics import calculate_statistics, print_statistics_summary
-from src.metrics.visualization import visualize_recovery, plot_boxplot
+from src.visualization.visualization import visualize_recovery, plot_boxplot
 
 # 配置參數
 NOISE_LEVEL = 0.2
